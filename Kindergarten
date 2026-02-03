@@ -1,1 +1,194 @@
+package hu.progmasters.quarterpractice;
+
+// 1.Create 3 Classes:
+
+public class Parent {
+
+    private String name;
+    private int age;
+
+    public Parent(String name, int age) {
+        this.name = name;
+        this.age = age;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
+}
+
+//Child Class: 
+
+public class Child {
+
+    private String name;
+    private int age;
+    private boolean pottyTrained;
+    private Parent parentOne;
+    private Parent parentTwo;
+
+    public Child() {
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
+
+    public boolean isPottyTrained() {
+        return pottyTrained;
+    }
+
+    public void setPottyTrained(boolean pottyTrained) {
+        this.pottyTrained = pottyTrained;
+    }
+
+    public Parent getParentOne() {
+        return parentOne;
+    }
+
+    public void setParentOne(Parent parentOne) {
+        this.parentOne = parentOne;
+    }
+
+    public Parent getParentTwo() {
+        return parentTwo;
+    }
+
+    public void setParentTwo(Parent parentTwo) {
+        this.parentTwo = parentTwo;
+    }
+}
+
+//Kindergarten Class:
+
+public class Kindergarten {
+
+//2. Add Family Members:
+    public String getFamilyMembersNames(Child child) {
+        return child.getName() + ", " +
+               child.getParentOne().getName() + ", " +
+               child.getParentTwo().getName();
+    }
+
+//3. Older Parents and Age Difference:
+
+    public String getOlderParent(Child child) {
+        Parent p1 = child.getParentOne();
+        Parent p2 = child.getParentTwo();
+
+        if (p1.getAge() > p2.getAge()) {
+            return p1.getName() + " idősebb " + (p1.getAge() - p2.getAge()) + " évvel";
+        } else {
+            return p2.getName() + " idősebb " + (p2.getAge() - p1.getAge()) + " évvel";
+        }
+    }
+
+//4. Count A in 3D Array:
+
+    public int[] countAsInNames(Child child) {
+        int[] result = new int[3];
+
+        result[0] = countA(child.getName());
+        result[1] = countA(child.getParentOne().getName());
+        result[2] = countA(child.getParentTwo().getName());
+
+        return result;
+    }
+
+    private int countA(String text) {
+        int count = 0;
+        for (char c : text.toLowerCase().toCharArray()) {
+            if (c == 'a') {
+                count++;
+            }
+        }
+        return count;
+    }
+}
+
+// Unit Tests:
+
+package hu.progmasters.quarterpractice;
+
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+class KindergartenTest {
+
+    @Test
+    void testFamilyMembersNames() {
+        Parent parent1 = new Parent("Anna", 35);
+        Parent parent2 = new Parent("Bela", 38);
+
+        Child child = new Child();
+        child.setName("Kata");
+        child.setParentOne(parent1);
+        child.setParentTwo(parent2);
+
+        Kindergarten kindergarten = new Kindergarten();
+
+        String result = kindergarten.getFamilyMembersNames(child);
+
+        assertEquals("Kata, Anna, Bela", result);
+    }
+
+    @Test
+    void testOlderParent() {
+        Parent parent1 = new Parent("Anna", 35);
+        Parent parent2 = new Parent("Bela", 40);
+
+        Child child = new Child();
+        child.setParentOne(parent1);
+        child.setParentTwo(parent2);
+
+        Kindergarten kindergarten = new Kindergarten();
+
+        String result = kindergarten.getOlderParent(child);
+
+        assertEquals("Bela idősebb 5 évvel", result);
+    }
+
+    @Test
+    void testCountAsInNames() {
+        Parent parent1 = new Parent("Anna", 35);   // 2 a
+        Parent parent2 = new Parent("Bela", 40);   // 1 a
+
+        Child child = new Child();
+        child.setName("Kata");                     // 2 a
+        child.setParentOne(parent1);
+        child.setParentTwo(parent2);
+
+        Kindergarten kindergarten = new Kindergarten();
+
+        int[] result = kindergarten.countAsInNames(child);
+
+        assertArrayEquals(new int[]{2, 2, 1}, result);
+    }
+}
+
 
