@@ -79,8 +79,6 @@ public class Child {
     }
 }
 
-package hu.progmasters.quarterpractice;
-
 public class Kindergarten {
 
     // 2. feladat
@@ -122,3 +120,57 @@ public class Kindergarten {
     }
 }
 
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+public class KindergartenTest {
+
+    private Kindergarten kindergarten;
+    private Child child;
+
+    @BeforeEach
+    void initKindergarten() {
+        kindergarten = new Kindergarten();
+        Parent first = new Parent("Adam", 42);
+        Parent second = new Parent("Eva", 32);
+        child = new Child();
+        child.setName("Bob");
+        child.setAge(2);
+        child.setPottyTrained(true);
+        child.setFirstParent(first);
+        child.setSecondParent(second);
+    }
+
+    // 2.
+    @Test
+    void testGetFamilyEquation() {
+        assertEquals("Adam + Eva = Bob", kindergarten.getFamilyEquation(child));
+        child.getFirstParent().setName("Bob");
+        child.getSecondParent().setName("Bob");
+        child.setName("Little Bob");
+        assertEquals("Bob + Bob = Little Bob", kindergarten.getFamilyEquation(child));
+    }
+
+    // 3.
+    @Test
+    void testGetOlderParent() {
+        assertEquals("Adam is older by 10", kindergarten.getOlderParent(child));
+        child.getSecondParent().setAge(43);
+        assertEquals("Eva is older by 1", kindergarten.getOlderParent(child));
+    }
+
+    // 4.
+    @Test
+    void testGetALettersFromNames() {
+        int[] letters = kindergarten.getALettersFromNames(child);
+        assertEquals(0, letters[0]);
+        assertEquals(2, letters[1]);
+        assertEquals(1, letters[2]);
+
+        child.setName("Abraham");
+        int[] letters2 = kindergarten.getALettersFromNames(child);
+        assertEquals(3, letters2[0]);
+    }
+}
